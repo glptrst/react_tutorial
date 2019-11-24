@@ -94,13 +94,23 @@ class Game extends React.Component {
       let moveX = Math.floor(this.state.locationsHistory[move]/3);
       let moveY = this.state.locationsHistory[move] - (moveX * 3);
 
-      const desc = move ?
-	    `Go to move #${move} (${moveX}:${moveY})`:
-	    'Go to game start';
+      const DescEl = () => {
+	const text = move ?
+	      `Go to move #${move} (${moveX}:${moveY})`:
+	      'Go to game start';
+	return (
+	  move === this.state.stepNumber ?
+	    <b>{text}</b> :
+	  text
+	);
+      };
+
       return (
-	<li key={move}>
-	  <button onClick={() => this.jumpTo(move)}>{desc}</button>
-	</li>
+      	<li key={move}>
+      	  <button onClick={() => this.jumpTo(move)}>
+      	    <DescEl />
+      	  </button>
+      	</li>
       );
     });
 
