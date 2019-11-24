@@ -35,6 +35,12 @@ class Board extends React.Component {
   }
 }
 
+function ToggleButton(props) {
+  return (
+    <button onClick={props.onClick}>Reverse List</button>
+  );
+}
+
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -45,6 +51,7 @@ class Game extends React.Component {
       stepNumber: 0,
       xIsNext: true,
       locationsHistory: [null],
+      reversedHistoryList: false,
     };
   }
 
@@ -77,6 +84,10 @@ class Game extends React.Component {
     });
   }
 
+  reverse() {
+    this.setState({reversedHistoryList: !this.state.reversedHistoryList});
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -91,9 +102,7 @@ class Game extends React.Component {
 	      `Go to move #${move} (${moveX}:${moveY})`:
 	      'Go to game start';
 	return (
-	  move === this.state.stepNumber ?
-	    <b>{text}</b> :
-	  text
+	  move === this.state.stepNumber ? <b>{text}</b> : text
 	);
       };
 
@@ -105,6 +114,8 @@ class Game extends React.Component {
       	</li>
       );
     });
+    if (this.state.reversedHistoryList)
+      moves.reverse();
 
     let status;
     if (winner) {
@@ -124,6 +135,7 @@ class Game extends React.Component {
         <div className="game-info">
           <div>{status}</div>
           <ol>{moves}</ol>
+	  <ToggleButton onClick={() => this.reverse()}/>
         </div>
       </div>
     );
